@@ -62,6 +62,8 @@ flutter:
   assets:
     - assets/images/himsi_1.png
     - assets/images/AplikaSI.png
+    - assets/images/logo.png
+    - assets/images/HomeBackground.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
