@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
+import 'home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,22 +8,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Aplikasi',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: const LoginPage(),
@@ -37,6 +27,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           children: [
@@ -62,30 +53,31 @@ class LoginPage extends StatelessWidget {
             ),
             Column(
               children: [
-                CustTextField(
+                const CustTextField(
                   hintText: 'Email',
                   prefixIcon: Icon(Icons.person_2_outlined),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
-                CustTextField(
+                const CustTextField(
                   hintText: 'Password',
                   prefixIcon: Icon(Icons.lock_outline),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
                 CustButton(
-                    buttonText: 'Login',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AplikaSI(),
-                        ),
-                      );
-                    })
+                  buttonText: 'Login',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AplikaSI(),
+                      ),
+                    );
+                  },
+                )
               ],
             ),
           ],
