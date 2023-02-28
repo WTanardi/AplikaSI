@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'profil.dart';
+import 'news.dart';
 
 class AplikaSI extends StatefulWidget {
   const AplikaSI({super.key});
@@ -11,7 +12,7 @@ class AplikaSI extends StatefulWidget {
 class _AplikaSIState extends State<AplikaSI> {
   late int index;
 
-  List showBottomNavBarItem = [HomePage(), HomePage(), HomePage(), Profil()];
+  List showBottomNavBarItem = [HomePage(), HomePage(), News(), Profil()];
 
   @override
   void initState() {
