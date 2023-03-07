@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "485307703797",
+    "project_id": "aplikasi-1dd79",
+    "storage_bucket": "aplikasi-1dd79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485307703797:android:39023380c86ce0729b00bc",
+        "android_client_info": {
+          "package_name": "com.example.aplika_si"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485307703797-ra1nmelrkbmqt57bmbu29bkvd5opabbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkA2SEfdFmvnAcEFXzeIHrAPMzSZ3Vhpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485307703797-ra1nmelrkbmqt57bmbu29bkvd5opabbq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "485307703797-00iiuslhv5aqicvnm21biviptl0ujtn1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aplikaSi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

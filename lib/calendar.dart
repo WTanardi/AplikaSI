@@ -13,15 +13,19 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
-    List<String> days = [
-      'Sun',
-      'Mon',
-      'Tue',
-      'Wed',
-      'Tue',
-      'Thu',
-      'Fri',
-      'Sat',
+    List<String> months = [
+      "January",
+      "February",
+      "March",
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(17, 32, 17, 0),
@@ -30,8 +34,8 @@ class _CalendarPageState extends State<CalendarPage> {
           children: [
             Container(
               margin: const EdgeInsets.only(bottom: 15),
-              child: const Text(
-                "March",
+              child: Text(
+                months[DateTime.now().month - 1],
                 style: TextStyle(
                   fontSize: 32,
                   fontFamily: 'Poppins',

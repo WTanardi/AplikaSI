@@ -1,7 +1,13 @@
+import 'package:aplika_si/controller/AuthController.dart';
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -21,8 +27,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _loginAuth = Auth();
 
   @override
   Widget build(BuildContext context) {
@@ -51,34 +67,47 @@ class LoginPage extends StatelessWidget {
             const SizedBox(
               height: 24,
             ),
-            Column(
-              children: [
-                const CustTextField(
-                  hintText: 'Email',
-                  prefixIcon: Icon(Icons.person_2_outlined),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                const CustTextField(
-                  hintText: 'Password',
-                  prefixIcon: Icon(Icons.lock_outline),
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                CustButton(
-                  buttonText: 'Login',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AplikaSI(),
-                      ),
-                    );
-                  },
-                )
-              ],
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustTextField(
+                    hintText: 'Email',
+                    prefixIcon: const Icon(Icons.person_2_outlined),
+                    controller: _emailController,
+                    isObscure: false,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  CustTextField(
+                    hintText: 'Password',
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    controller: _passwordController,
+                    isObscure: true,
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  CustButton(
+                    buttonText: 'Login',
+                    onPressed: () {
+                      // if (_formKey.currentState!.validate()) {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => const AplikaSI(),
+                      //     ),
+                      //   );
+                      // }
+                      _loginAuth.SignIn(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      );
+                    },
+                  )
+                ],
+              ),
             ),
           ],
         ),
@@ -90,18 +119,30 @@ class LoginPage extends StatelessWidget {
 class CustTextField extends StatelessWidget {
   final String hintText;
   final Icon prefixIcon;
+  final bool isObscure;
+  final TextEditingController controller;
 
   const CustTextField({
     super.key,
     required this.hintText,
     required this.prefixIcon,
+    required this.isObscure,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 324,
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field cannot be empty';
+          }
+          return null;
+        },
+        controller: controller,
+        obscureText: isObscure,
         cursorColor: Colors.black,
         decoration: InputDecoration(
           hintText: hintText,
@@ -136,45 +177,24 @@ class CustButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(45, 0, 0, 0),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 14, 0, 14),
-              height: 48,
-              width: 260,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 36, 31, 123),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                buttonText,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(0, 14, 0, 14),
+          height: 48,
+          width: 324,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 36, 31, 123),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            buttonText,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontFamily: 'Poppins',
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(
-              width: 16,
-            ),
-            GestureDetector(
-              child: Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 36, 31, 123),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: const Icon(
-                  Icons.fingerprint,
-                  color: Colors.white,
-                ),
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );

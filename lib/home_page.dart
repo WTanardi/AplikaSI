@@ -238,7 +238,7 @@ class HomePage extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 220,
+                  width: 200,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
@@ -250,9 +250,10 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 142.7,
+                  width: 120,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Column(
                         children: const [
