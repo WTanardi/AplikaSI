@@ -10,7 +10,7 @@ class Profil extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 30),
+              margin: const EdgeInsets.only(top: 30),
               width: 150,
               height: 150,
               decoration: const BoxDecoration(
@@ -19,23 +19,23 @@ class Profil extends StatelessWidget {
                   Radius.circular(8),
                 ),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.person,
                 color: Colors.white,
                 size: 104.7,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               "William Tanardi",
               style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w600,
                   fontFamily: 'Poppins'),
             ),
-            Text(
+            const Text(
               "082111633021",
               style: TextStyle(
                   fontSize: 16,
@@ -43,25 +43,25 @@ class Profil extends StatelessWidget {
                   fontFamily: 'Poppins'),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-              padding: EdgeInsets.all(17),
-              color: Color(0xFF7CAEF3),
+              margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+              padding: const EdgeInsets.all(17),
+              color: const Color(0xFF7CAEF3),
               width: double.infinity,
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.email,
                         size: 42,
                         color: Color(0xFF241F7B),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             "Email",
                             style: TextStyle(
@@ -84,22 +84,22 @@ class Profil extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.phone_android,
                         size: 42,
                         color: Color(0xFF241F7B),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             "Phone",
                             style: TextStyle(
@@ -122,22 +122,22 @@ class Profil extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.people,
                         size: 42,
                         color: Color(0xFF241F7B),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             "Field",
                             style: TextStyle(
@@ -160,22 +160,22 @@ class Profil extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.menu_book_rounded,
                         size: 42,
                         color: Color(0xFF241F7B),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             "Grade",
                             style: TextStyle(
@@ -202,45 +202,46 @@ class Profil extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(bottom: 20),
+              margin: const EdgeInsets.only(bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 23, vertical: 8),
+                      backgroundColor: Colors.transparent,
+                      foregroundColor: const Color(0xFF241F7B),
+                      elevation: 0,
+                      side:
+                          const BorderSide(color: Color(0xFF241F7B), width: 3),
+                    ),
+                    child: const Text(
                       "Edit Profile",
                       style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           fontSize: 16),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 23, vertical: 8),
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: Color(0xFF241F7B),
-                      elevation: 0,
-                      side: BorderSide(color: Color(0xFF241F7B), width: 3),
-                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 23, vertical: 8),
+                      backgroundColor: const Color(0xFFED2939),
+                      foregroundColor: const Color(0xFF241F7B),
+                    ),
+                    child: const Text(
                       "LOGOUT",
                       style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           fontSize: 16),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 23, vertical: 8),
-                      backgroundColor: Color(0xFFED2939),
-                      foregroundColor: Color(0xFF241F7B),
                     ),
                   ),
                 ],

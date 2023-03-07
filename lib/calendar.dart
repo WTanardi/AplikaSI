@@ -25,39 +25,37 @@ class _CalendarPageState extends State<CalendarPage> {
     ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(17, 32, 17, 0),
-      child: Container(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 15),
-              child: const Text(
-                "March",
-                style: TextStyle(
-                  fontSize: 32,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w900,
-                ),
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 15),
+            child: const Text(
+              "March",
+              style: TextStyle(
+                fontSize: 32,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w900,
               ),
             ),
-            TableCalendar(
-              calendarFormat: CalendarFormat.month,
-              firstDay: DateTime.utc(2023, 2, 1),
-              lastDay: DateTime.now(),
-              focusedDay: DateTime.now(),
-              headerVisible: false,
-              calendarStyle: CalendarStyle(
-                isTodayHighlighted: true,
-                defaultTextStyle: const TextStyle(
-                  fontFamily: 'Poppins',
-                ),
-                defaultDecoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+          ),
+          TableCalendar(
+            calendarFormat: CalendarFormat.month,
+            firstDay: DateTime.utc(2023, 2, 1),
+            lastDay: DateTime.now(),
+            focusedDay: DateTime.now(),
+            headerVisible: false,
+            calendarStyle: CalendarStyle(
+              isTodayHighlighted: true,
+              defaultTextStyle: const TextStyle(
+                fontFamily: 'Poppins',
+              ),
+              defaultDecoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
