@@ -43,10 +43,10 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
             TableCalendar(
               calendarFormat: CalendarFormat.month,
-              firstDay: DateTime.utc(2023, 2, 1),
-              lastDay: DateTime.now(),
+              firstDay: DateTime.utc(DateTime.now().year, 1, 1),
+              lastDay: DateTime.utc(DateTime.now().year, 12, 31),
               focusedDay: DateTime.now(),
-              headerVisible: false,
+              headerVisible: true,
               calendarStyle: CalendarStyle(
                 isTodayHighlighted: true,
                 defaultTextStyle: const TextStyle(
