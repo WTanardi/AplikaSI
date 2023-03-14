@@ -32,8 +32,8 @@ class _CalendarPageState extends State<CalendarPage> {
           children: [
             Container(
               margin: const EdgeInsets.only(bottom: 15),
-              child: Text(
-                months[DateTime.now().month - 1],
+              child: const Text(
+                "March",
                 style: TextStyle(
                   fontSize: 32,
                   fontFamily: 'Poppins',
@@ -43,10 +43,10 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
             TableCalendar(
               calendarFormat: CalendarFormat.month,
-              firstDay: DateTime.utc(DateTime.now().year, 1, 1),
-              lastDay: DateTime.utc(DateTime.now().year, 12, 31),
+              firstDay: DateTime.utc(2023, 2, 1),
+              lastDay: DateTime.now(),
               focusedDay: DateTime.now(),
-              headerVisible: true,
+              headerVisible: false,
               calendarStyle: CalendarStyle(
                 isTodayHighlighted: true,
                 defaultTextStyle: const TextStyle(

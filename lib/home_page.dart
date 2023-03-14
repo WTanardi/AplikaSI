@@ -1,4 +1,3 @@
-import 'package:aplika_si/calendar.dart';
 import 'package:flutter/material.dart';
 import 'profil.dart';
 import 'news.dart';
@@ -14,7 +13,12 @@ class AplikaSI extends StatefulWidget {
 class _AplikaSIState extends State<AplikaSI> {
   late int index;
 
-  List showBottomNavBarItem = [HomePage(), CalendarPage(), News(), Profil()];
+  List showBottomNavBarItem = [
+    const HomePage(),
+    const CalendarPage(),
+    const News(),
+    const Profil()
+  ];
 
   @override
   void initState() {
