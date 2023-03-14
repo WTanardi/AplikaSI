@@ -65,6 +65,12 @@ flutter:
     - assets/images/AplikaSI.png
     - assets/images/logo.png
     - assets/images/HomeBackground.png
+    - assets/images/rizfi.png
+    - assets/images/abram.png
+    - assets/images/billy.png
+    - assets/images/HomeBackground.png
+    - assets/icon/mdi_instagram.png
+    - assets/icon/ph_linkedin-logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
