@@ -1,6 +1,8 @@
 import 'package:aplika_si/controller/AuthController.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'validator.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -38,7 +40,6 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final _loginAuth = Auth();
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +77,14 @@ class _LoginPageState extends State<LoginPage> {
                     prefixIcon: const Icon(Icons.person_2_outlined),
                     controller: _emailController,
                     isObscure: false,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This value cannot be empty';
+                      } else if (!value.isValidEmail) {
+                        return 'Enter valid email';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 16,
@@ -85,25 +94,32 @@ class _LoginPageState extends State<LoginPage> {
                     prefixIcon: const Icon(Icons.lock_outline),
                     controller: _passwordController,
                     isObscure: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This value cannot be empty';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 24,
                   ),
                   CustButton(
                     buttonText: 'Login',
-                    onPressed: () {
-                      // if (_formKey.currentState!.validate()) {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => const AplikaSI(),
-                      //     ),
-                      //   );
-                      // }
-                      _loginAuth.SignIn(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      );
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        User? user = await Auth.SignIn(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        );
+                        if (user != null) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AplikaSI(),
+                            ),
+                          );
+                        }
+                      }
                     },
                   )
                 ],
@@ -121,6 +137,7 @@ class CustTextField extends StatelessWidget {
   final Icon prefixIcon;
   final bool isObscure;
   final TextEditingController controller;
+  final String? Function(String?) validator;
 
   const CustTextField({
     super.key,
@@ -128,6 +145,7 @@ class CustTextField extends StatelessWidget {
     required this.prefixIcon,
     required this.isObscure,
     required this.controller,
+    required this.validator,
   });
 
   @override
@@ -135,12 +153,7 @@ class CustTextField extends StatelessWidget {
     return SizedBox(
       width: 324,
       child: TextFormField(
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'This field cannot be empty';
-          }
-          return null;
-        },
+        validator: validator,
         controller: controller,
         obscureText: isObscure,
         cursorColor: Colors.black,

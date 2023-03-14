@@ -1,3 +1,5 @@
+import 'package:aplika_si/controller/AuthController.dart';
+import 'main.dart';
 import 'package:flutter/material.dart';
 
 class Profil extends StatelessWidget {
@@ -228,7 +230,17 @@ class Profil extends StatelessWidget {
                     width: 15,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await Auth.LogOut();
+                      print('Logged out');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ),
+                      );
+                      print(Auth.GetAuthUser());
+                    },
                     child: Text(
                       "LOGOUT",
                       style: TextStyle(
