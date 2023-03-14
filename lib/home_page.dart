@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'profil.dart';
 import 'news.dart';
 import 'calendar.dart';
+import 'about.dart';
 
 class AplikaSI extends StatefulWidget {
   const AplikaSI({super.key});
@@ -45,10 +46,20 @@ class _AplikaSIState extends State<AplikaSI> {
               fit: BoxFit.fitWidth,
             ),
           ),
-          actions: const [
-            Icon(
-              Icons.notifications,
-              size: 35,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AboutUs(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.question_mark_outlined,
+                size: 35,
+              ),
             ),
             SizedBox(
               width: 15,
