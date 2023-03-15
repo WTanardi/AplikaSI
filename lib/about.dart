@@ -21,7 +21,7 @@ class AboutUs extends StatelessWidget {
                 ),
               );
             },
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
           ),
           title: Center(
             child: Image.asset(
@@ -40,12 +40,12 @@ class AboutUs extends StatelessWidget {
                   ),
                 );
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.question_mark_outlined,
                 size: 35,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             )
           ],
@@ -55,7 +55,7 @@ class AboutUs extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "About us",
                 style: TextStyle(
                   fontSize: 32,
@@ -64,8 +64,8 @@ class AboutUs extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: const BoxDecoration(
                   color: Color(0xFF7CAEF3),
                   borderRadius: BorderRadius.all(
                     Radius.circular(8),
@@ -75,7 +75,7 @@ class AboutUs extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 85,
                       height: 87,
                       child: Image.asset(
@@ -88,8 +88,8 @@ class AboutUs extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.only(left: 10),
+                          decoration: const BoxDecoration(
                             color: Color(0xFF241F7B),
                             borderRadius: BorderRadius.all(
                               Radius.circular(5),
@@ -100,7 +100,7 @@ class AboutUs extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Rizfi Ferdiansyah",
                                 style: TextStyle(
@@ -122,12 +122,12 @@ class AboutUs extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 3,
                         ),
                         Row(
                           children: [
-                            Container(
+                            SizedBox(
                               width: 22,
                               height: 22,
                               child: Image.asset(
@@ -135,10 +135,10 @@ class AboutUs extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
-                            Container(
+                            SizedBox(
                               width: 22,
                               height: 22,
                               child: Image.asset(
@@ -153,12 +153,12 @@ class AboutUs extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: const BoxDecoration(
                   color: Color(0xFF7CAEF3),
                   borderRadius: BorderRadius.all(
                     Radius.circular(8),
@@ -168,7 +168,7 @@ class AboutUs extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 85,
                       height: 87,
                       child: Image.asset(
@@ -181,8 +181,8 @@ class AboutUs extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.only(left: 10),
+                          decoration: const BoxDecoration(
                             color: Color(0xFF241F7B),
                             borderRadius: BorderRadius.all(
                               Radius.circular(5),
@@ -193,7 +193,7 @@ class AboutUs extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "William Tanardi",
                                 style: TextStyle(
@@ -215,12 +215,12 @@ class AboutUs extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 3,
                         ),
                         Row(
                           children: [
-                            Container(
+                            SizedBox(
                               width: 22,
                               height: 22,
                               child: Image.asset(
@@ -228,10 +228,10 @@ class AboutUs extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
-                            Container(
+                            SizedBox(
                               width: 22,
                               height: 22,
                               child: Image.asset(
@@ -246,12 +246,12 @@ class AboutUs extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: const BoxDecoration(
                   color: Color(0xFF7CAEF3),
                   borderRadius: BorderRadius.all(
                     Radius.circular(8),
@@ -261,7 +261,7 @@ class AboutUs extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 85,
                       height: 87,
                       child: Image.asset(
@@ -274,8 +274,8 @@ class AboutUs extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.only(left: 10),
+                          decoration: const BoxDecoration(
                             color: Color(0xFF241F7B),
                             borderRadius: BorderRadius.all(
                               Radius.circular(5),
@@ -286,7 +286,7 @@ class AboutUs extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Abram Widi Firmanto",
                                 style: TextStyle(
@@ -308,12 +308,12 @@ class AboutUs extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 3,
                         ),
                         Row(
                           children: [
-                            Container(
+                            SizedBox(
                               width: 22,
                               height: 22,
                               child: Image.asset(
@@ -321,10 +321,10 @@ class AboutUs extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
-                            Container(
+                            SizedBox(
                               width: 22,
                               height: 22,
                               child: Image.asset(
@@ -340,10 +340,10 @@ class AboutUs extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Version",
                       style: TextStyle(

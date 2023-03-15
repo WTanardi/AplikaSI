@@ -56,12 +56,12 @@ class _AplikaSIState extends State<AplikaSI> {
                   ),
                 );
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.question_mark_outlined,
                 size: 35,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             )
           ],
