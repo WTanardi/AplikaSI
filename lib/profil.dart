@@ -1,9 +1,12 @@
 import 'package:aplika_si/controller/AuthController.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
 import 'package:flutter/material.dart';
 
 class Profil extends StatelessWidget {
-  const Profil({super.key});
+  Profil({super.key});
+
+  final User? currentUser = Auth.GetAuthUser();
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +236,6 @@ class Profil extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       await Auth.LogOut();
-                      print('Logged out');
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

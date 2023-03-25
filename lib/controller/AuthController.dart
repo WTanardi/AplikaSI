@@ -36,15 +36,15 @@ class Auth {
     }
   }
 
-  static String? GetAuthUser() {
-    String? coba;
+  static User? GetAuthUser() {
+    User? user;
     try {
       if (FirebaseAuth.instance.currentUser != null) {
-        coba = 'User: ${FirebaseAuth.instance.currentUser?.uid}';
+        user = FirebaseAuth.instance.currentUser;
       }
     } on FirebaseAuthException catch (e) {
-      coba = e.code;
+      print(e.code);
     }
-    return coba;
+    return user;
   }
 }

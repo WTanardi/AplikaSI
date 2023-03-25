@@ -17,7 +17,7 @@ class _AplikaSIState extends State<AplikaSI> {
     const HomePage(),
     const CalendarPage(),
     const News(),
-    const Profil()
+    Profil()
   ];
 
   @override
