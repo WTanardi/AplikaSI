@@ -113,11 +113,13 @@ class _LoginPageState extends State<LoginPage> {
                           password: _passwordController.text,
                         );
                         if (user != null) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AplikaSI(),
-                            ),
-                          );
+                          if (context.mounted) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const AplikaSI(),
+                              ),
+                            );
+                          }
                         }
                       }
                     },
