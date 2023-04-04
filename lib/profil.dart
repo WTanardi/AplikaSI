@@ -4,9 +4,12 @@ import 'main.dart';
 import 'package:flutter/material.dart';
 
 class Profil extends StatelessWidget {
-  Profil({super.key});
+  Profil({super.key}) {
+    email = currentUser!.email!;
+  }
 
-  final User? currentUser = Auth.GetAuthUser();
+  User? currentUser = Auth.GetAuthUser();
+  String? email;
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +69,8 @@ class Profil extends StatelessWidget {
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "Email",
                             style: TextStyle(
                               fontSize: 16,
@@ -77,8 +80,8 @@ class Profil extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "william.tanardi-2021@fst.unair.ac.id",
-                            style: TextStyle(
+                            email!,
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Poppins',

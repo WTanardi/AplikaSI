@@ -1,6 +1,6 @@
 class User {
-  String username;
   String email;
+  String username;
   String phone;
   bool isCommittee;
   String field;
