@@ -1,8 +1,13 @@
+import 'package:aplika_si/Model/ToDo.dart';
+import 'package:aplika_si/provider/ToDoList.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'profil.dart';
 import 'news.dart';
 import 'calendar.dart';
 import 'about.dart';
+import 'main.dart';
 
 class AplikaSI extends StatefulWidget {
   const AplikaSI({super.key});
@@ -118,10 +123,21 @@ class _AplikaSIState extends State<AplikaSI> {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
   });
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _titleController = TextEditingController();
+  final _courseController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  DateTime? deadlineDate;
+  TimeOfDay? deadlineHour;
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +355,112 @@ class HomePage extends StatelessWidget {
                     ),
                     IconButton(
                       padding: EdgeInsets.zero,
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => Dialog(
+                            insetPadding:
+                                const EdgeInsets.only(top: 80, bottom: 80),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Form(
+                                key: formKey,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CustTextField(
+                                      hintText: 'Tugas',
+                                      prefixIcon: const Icon(Icons.task),
+                                      isObscure: false,
+                                      controller: _titleController,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'This field cannot be empty';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    const SizedBox(height: 10),
+                                    CustTextField(
+                                      hintText: 'Mata Kuliah',
+                                      prefixIcon: const Icon(Icons.book),
+                                      isObscure: false,
+                                      controller: _courseController,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'This fiels cannot be empty';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    const SizedBox(height: 10),
+                                    CustButton(
+                                      buttonText: (deadlineHour == null ||
+                                              deadlineDate == null)
+                                          ? 'Please select deadline'
+                                          : '${DateFormat('dd-MM-yyyy').format(deadlineDate!)} / ${deadlineHour!.format(context)}',
+                                      onPressed: () {
+                                        showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.utc(
+                                            DateTime.now().year,
+                                            DateTime.now().month + 1,
+                                            1,
+                                          ),
+                                        )
+                                            .then((date) {
+                                              if (date == null) return;
+                                              setState(() {
+                                                deadlineDate = date;
+                                              });
+                                            })
+                                            .then(
+                                              (value) => showTimePicker(
+                                                context: context,
+                                                initialTime: TimeOfDay.now(),
+                                              ),
+                                            )
+                                            .then(
+                                              (time) {
+                                                if (time == null) return;
+                                                setState(() {
+                                                  deadlineHour = time;
+                                                });
+                                              },
+                                            );
+                                      },
+                                    ),
+                                    const SizedBox(height: 10),
+                                    CustButton(
+                                      buttonText: 'Submit',
+                                      onPressed: () {
+                                        if (formKey.currentState!.validate()) {
+                                          Provider.of<ToDoModel>(context,
+                                                  listen: false)
+                                              .addToDo(
+                                            '${deadlineDate!.month}m${deadlineHour!.hour}h${deadlineHour!.minute}ms',
+                                            Todo(
+                                                task: _titleController.text
+                                                    .toString(),
+                                                course: _courseController.text
+                                                    .toString(),
+                                                deadlineDate: deadlineDate!,
+                                                deadlineHour: deadlineHour!),
+                                          );
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       icon: const Icon(
                         Icons.edit,
                         size: 17,
@@ -347,29 +468,70 @@ class HomePage extends StatelessWidget {
                     )
                   ],
                 ),
+                Consumer<ToDoModel>(
+                  builder: (context, todo, child) {
+                    return Column(
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: (todo.list.isEmpty || todo.list.length < 3)
+                              ? todo.list.length
+                              : 3,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                ToDoList(
+                                  task: todo.list.values.toList()[index].task,
+                                  course:
+                                      todo.list.values.toList()[index].course,
+                                  deadlineDate: todo.list.values
+                                      .toList()[index]
+                                      .deadlineDate,
+                                  deadlineHour: todo.list.values
+                                      .toList()[index]
+                                      .deadlineHour,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                )
+                              ],
+                            );
+                          },
+                        )
+                      ],
+                    );
+                  },
+                ),
                 Column(
                   children: [
-                    const ToDoList(),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const ToDoList(),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const ToDoList(),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(right: 25),
-                      alignment: Alignment.bottomRight,
-                      child: const Text(
-                        "VIEW MORE",
-                        style: TextStyle(
-                            color: Color(0xFF241F7B),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400),
+                    // const ToDoList(),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const ToDoList(),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // const ToDoList(),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    GestureDetector(
+                      onTap: () {
+                        print(Provider.of<ToDoModel>(context, listen: false)
+                            .list
+                            .keys);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 25),
+                        alignment: Alignment.bottomRight,
+                        child: const Text(
+                          "VIEW MORE",
+                          style: TextStyle(
+                              color: Color(0xFF241F7B),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
+                        ),
                       ),
                     )
                   ],
@@ -520,8 +682,17 @@ class HomePage extends StatelessWidget {
 }
 
 class ToDoList extends StatelessWidget {
+  final String task;
+  final String course;
+  final DateTime deadlineDate;
+  final TimeOfDay deadlineHour;
+
   const ToDoList({
     super.key,
+    required this.task,
+    required this.course,
+    required this.deadlineDate,
+    required this.deadlineHour,
   });
 
   @override
@@ -546,18 +717,18 @@ class ToDoList extends StatelessWidget {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
-                    "Tugas 2",
-                    style: TextStyle(
+                    task,
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         fontFamily: 'Poppins'),
                   ),
                   Text(
-                    "13/02",
-                    style: TextStyle(
+                    "${deadlineDate.day}/${deadlineDate.month}",
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -567,18 +738,18 @@ class ToDoList extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
-                    "Sistem Enterprose - I2",
-                    style: TextStyle(
+                    course,
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.w300,
                         fontFamily: 'Poppins'),
                   ),
                   Text(
-                    "12:00",
-                    style: TextStyle(
+                    deadlineHour.format(context),
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.w300,

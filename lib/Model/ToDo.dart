@@ -1,7 +1,14 @@
+import 'package:flutter/material.dart';
+
 class Todo {
   String task;
   String course;
-  DateTime deadline;
+  TimeOfDay deadlineHour;
+  DateTime deadlineDate;
 
-  Todo({required this.task, required this.course, required this.deadline});
+  Todo(
+      {required this.task,
+      required this.course,
+      required this.deadlineHour,
+      required this.deadlineDate});
 }
