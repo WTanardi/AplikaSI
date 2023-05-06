@@ -1,15 +1,25 @@
-import 'package:aplika_si/controller/AuthController.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:aplika_si/Model/User.dart';
+import 'package:aplika_si/Service/Auth_Service.dart';
+import 'package:aplika_si/Service/Firestore_Service.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
 import 'package:flutter/material.dart';
 
 class Profil extends StatelessWidget {
   Profil({super.key}) {
-    email = currentUser!.email!;
+    // email = currentUser!.email!;
+    setCurrentUser();
   }
 
-  User? currentUser = Auth.GetAuthUser();
+  Future<void> setCurrentUser() async {
+    user = await FireStore.getUser(Auth.getAuthUser()!.email!);
+  }
+
+  User? user;
+
   String? email;
+
+  String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +46,10 @@ class Profil extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              "William Tanardi",
-              style: TextStyle(
-                  fontSize: 32,
+            Text(
+              user!.username,
+              style: const TextStyle(
+                  fontSize: 26,
                   fontWeight: FontWeight.w600,
                   fontFamily: 'Poppins'),
             ),
@@ -80,7 +90,7 @@ class Profil extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            email!,
+                            user!.email,
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
@@ -107,8 +117,8 @@ class Profil extends StatelessWidget {
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "Phone",
                             style: TextStyle(
                               fontSize: 16,
@@ -118,8 +128,8 @@ class Profil extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "082111442634",
-                            style: TextStyle(
+                            user!.phone,
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Poppins',
@@ -145,8 +155,8 @@ class Profil extends StatelessWidget {
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "Field",
                             style: TextStyle(
                               fontSize: 16,
@@ -156,8 +166,8 @@ class Profil extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Media & Creative Content - Graphic Design",
-                            style: TextStyle(
+                            user!.field,
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Poppins',
@@ -183,8 +193,8 @@ class Profil extends StatelessWidget {
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "Grade",
                             style: TextStyle(
                               fontSize: 16,
@@ -194,8 +204,8 @@ class Profil extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "4th Semester",
-                            style: TextStyle(
+                            "${user!.semester}th Semester",
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Poppins',
@@ -238,7 +248,7 @@ class Profil extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      await Auth.LogOut();
+                      await Auth.logOut();
                       if (context.mounted) {
                         Navigator.pushReplacement(
                           context,

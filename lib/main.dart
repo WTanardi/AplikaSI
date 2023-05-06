@@ -1,4 +1,4 @@
-import 'package:aplika_si/controller/AuthController.dart';
+import 'package:aplika_si/Service/Auth_Service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -119,18 +119,22 @@ class _LoginPageState extends State<LoginPage> {
                     buttonText: 'Login',
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        User? user = await Auth.SignIn(
+                        String? message = await Auth.signIn(
                           email: _emailController.text,
                           password: _passwordController.text,
                         );
-                        if (user != null) {
-                          if (context.mounted) {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const AplikaSI(),
-                              ),
-                            );
-                          }
+                        if (message != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(message)),
+                          );
+                          return;
+                        }
+                        if (context.mounted) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const AplikaSI(),
+                            ),
+                          );
                         }
                       }
                     },

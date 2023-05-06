@@ -3,11 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class Auth {
-  static Future<User?> SignIn({
+  static Future<String?> signIn({
     required String email,
     required String password,
   }) async {
     User? user;
+    String? message;
     try {
       UserCredential credential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -15,28 +16,31 @@ class Auth {
         password: password,
       );
       user = credential.user;
-      print('you are logged in');
+      // message = 'Success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email');
+        message = 'No user found for that email';
       } else if (e.code == 'wrong-password') {
-        print('Wrong password');
+        message = 'Wrong password';
+      } else {
+        message = 'Unkown Failed';
       }
     }
-    print(user);
-    return user;
-    // print(user);
+    return message;
   }
 
-  static Future<void> LogOut() async {
+  static Future<String> logOut() async {
+    String message;
     try {
       await FirebaseAuth.instance.signOut();
+      message = 'Success';
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      message = e.message!;
     }
+    return message;
   }
 
-  static User? GetAuthUser() {
+  static User? getAuthUser() {
     User? user;
     try {
       if (FirebaseAuth.instance.currentUser != null) {
