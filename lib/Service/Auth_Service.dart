@@ -16,6 +16,7 @@ class Auth {
         password: password,
       );
       user = credential.user;
+      print('Sign in success');
       // message = 'Success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -23,8 +24,9 @@ class Auth {
       } else if (e.code == 'wrong-password') {
         message = 'Wrong password';
       } else {
-        message = 'Unkown Failed';
+        message = 'Unknown Failed';
       }
+      print(e);
     }
     return message;
   }
@@ -45,6 +47,7 @@ class Auth {
     try {
       if (FirebaseAuth.instance.currentUser != null) {
         user = FirebaseAuth.instance.currentUser;
+        print(user!.email);
       }
     } on FirebaseAuthException catch (e) {
       print(e.code);

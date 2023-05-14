@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class User {
   String email;
   String username;
+  String name;
+  String nim;
   String phone;
   bool isCommittee;
   String field;
@@ -11,6 +13,8 @@ class User {
   User({
     required this.email,
     required this.username,
+    required this.name,
+    required this.nim,
     required this.phone,
     required this.isCommittee,
     required this.field,
@@ -24,6 +28,8 @@ class User {
     return User(
         email: data['email'],
         username: data['username'],
+        name: data['name'],
+        nim: data['nim'],
         phone: data['phone'],
         isCommittee: data['isCommittee'],
         field: data['field'],
@@ -34,6 +40,8 @@ class User {
     return {
       'email': email,
       'username': username,
+      'name': name,
+      'nim': nim,
       'phone': phone,
       'iscCommittee': isCommittee,
       'field': field,

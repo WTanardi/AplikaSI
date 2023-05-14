@@ -1,4 +1,10 @@
+import 'package:aplika_si/Model/Event.dart';
 import 'package:aplika_si/Model/ToDo.dart';
+import 'package:aplika_si/Model/User.dart';
+import 'package:aplika_si/Service/Auth_Service.dart';
+import 'package:aplika_si/Service/Firestore_Service.dart';
+import 'package:aplika_si/login.dart';
+import 'package:aplika_si/provider/Events.dart';
 import 'package:aplika_si/provider/ToDoList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +13,6 @@ import 'profil.dart';
 import 'news.dart';
 import 'calendar.dart';
 import 'about.dart';
-import 'main.dart';
 
 class AplikaSI extends StatefulWidget {
   const AplikaSI({super.key});
@@ -140,7 +145,39 @@ class _HomePageState extends State<HomePage> {
   TimeOfDay? deadlineHour;
 
   @override
+  void didChangeDependencies() async {
+    Provider.of<Events>(context, listen: false).initData();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: FireStore.getUser(Auth.getAuthUser()!.email!),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return HomeWidget(snapshot, context);
+        }
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const <Widget>[
+              CircularProgressIndicator(
+                color: Color.fromARGB(255, 36, 31, 123),
+                semanticsLabel: 'Waiting for data',
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  SingleChildScrollView HomeWidget(
+      AsyncSnapshot<User> snapshot, BuildContext context) {
+    double? screenWidth = MediaQuery.of(context).size.width;
+    double? screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -151,15 +188,15 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      "Hi, William",
-                      style: TextStyle(
+                      "Hi, ${snapshot.data!.username}",
+                      style: const TextStyle(
                           fontSize: 24,
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600),
                     ),
-                    Text(
+                    const Text(
                       "Welcome back",
                       style: TextStyle(
                           fontSize: 12,
@@ -259,83 +296,32 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              color: Color(0xFF7CAEF3),
-            ),
-            margin: const EdgeInsets.all(15),
-            height: 111,
-            child: Row(
-              children: [
-                Container(
-                  width: 200,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        bottomLeft: Radius.circular(15)),
-                    color: Colors.white,
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/HomeBackground.png'),
-                        fit: BoxFit.cover),
+          Consumer<Events>(
+            builder: (context, data, child) {
+              return Row(
+                children: [
+                  SizedBox(
+                    height: screenHeight * 0.2,
+                    width: screenWidth,
+                    child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: data.events.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: [
+                            Event(
+                              title: data.events.values.toList()[index].title,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 120,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: const [
-                          Text(
-                            "POINTER 2023",
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF241F7B),
-                            ),
-                          ),
-                          Text(
-                            "Staff",
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF241F7B),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Open",
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF241F7B),
-                            ),
-                          ),
-                          Text(
-                            "Recruitment",
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF241F7B),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
           Container(
             padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
@@ -504,18 +490,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Column(
                   children: [
-                    // const ToDoList(),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    // const ToDoList(),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    // const ToDoList(),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
                     GestureDetector(
                       onTap: () {
                         print(Provider.of<ToDoModel>(context, listen: false)
@@ -675,6 +649,97 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class Event extends StatelessWidget {
+  const Event({
+    super.key,
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        color: Color(0xFF7CAEF3),
+      ),
+      margin: const EdgeInsets.all(15),
+      height: 111,
+      child: Row(
+        children: [
+          Container(
+            width: 200,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  bottomLeft: Radius.circular(15)),
+              color: Colors.white,
+              image: DecorationImage(
+                  image: AssetImage('assets/images/HomeBackground.png'),
+                  fit: BoxFit.cover),
+            ),
+          ),
+          SizedBox(
+            width: 120,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF241F7B),
+                      ),
+                    ),
+                    const Text(
+                      "Staff",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF241F7B),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Open",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF241F7B),
+                      ),
+                    ),
+                    Text(
+                      "Recruitment",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF241F7B),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
