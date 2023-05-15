@@ -8,11 +8,118 @@ import 'package:aplika_si/provider/Events.dart';
 import 'package:aplika_si/provider/ToDoList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:intl/intl.dart';
+import 'carousel_detail.dart';
 import 'profil.dart';
 import 'news.dart';
 import 'calendar.dart';
 import 'about.dart';
+
+final List<List<String>> carouList = [
+  [
+    "assets/images/HomeBackground.png",
+    "POINTER 2023 Staff",
+    "Open Recruitment",
+  ],
+  [
+    "assets/images/HomeBackground.png",
+    "POINTER 2023 Staff",
+    "Open Recruitment",
+  ],
+  [
+    "assets/images/HomeBackground.png",
+    "POINTER 2023 Staff",
+    "Open Recruitment",
+  ],
+  [
+    "assets/images/HomeBackground.png",
+    "POINTER 2023 Staff",
+    "Open Recruitment",
+  ],
+  [
+    "assets/images/HomeBackground.png",
+    "POINTER 2023 Staff",
+    "Open Recruitment",
+  ]
+];
+
+final List<Widget>? Function(BuildContext) imageSliders =
+    (BuildContext context) => carouList.asMap().entries.map(
+          (entry) {
+            final int index = entry.key;
+            final List<String> list = entry.value;
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFF7CAEF3),
+              ),
+              margin: EdgeInsets.all(5.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(list),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        flex: 3,
+                        child: Container(
+                          height: 120,
+                          child: Image.asset(list[0], fit: BoxFit.fitHeight),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Center(
+                                  child: Text(
+                                    list[1],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF241F7B),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                list[2],
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF241F7B),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ).toList();
 
 class AplikaSI extends StatefulWidget {
   const AplikaSI({super.key});
@@ -296,33 +403,34 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Consumer<Events>(
-            builder: (context, data, child) {
-              return Row(
-                children: [
-                  SizedBox(
-                    height: screenHeight * 0.2,
-                    width: screenWidth,
-                    child: ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: data.events.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            Event(
-                              title: data.events.values.toList()[index].title,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
+          Event(),
+          // Consumer<Events>(
+          //   builder: (context, data, child) {
+          //     return Row(
+          //       children: [
+          //         SizedBox(
+          //           height: screenHeight * 0.2,
+          //           width: screenWidth,
+          //           child: ListView.builder(
+          //             physics: const AlwaysScrollableScrollPhysics(),
+          //             scrollDirection: Axis.horizontal,
+          //             shrinkWrap: true,
+          //             itemCount: data.events.length,
+          //             itemBuilder: (BuildContext context, int index) {
+          //               return Column(
+          //                 children: [
+          //                   Event(
+          //                       title: data.events.values.toList()[index].title,
+          //                       ),
+          //                 ],
+          //               );
+          //             },
+          //           ),
+          //         ),
+          //       ],
+          //     );
+          //   },
+          // ),
           Container(
             padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
             width: double.infinity,
@@ -655,90 +763,62 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class Event extends StatelessWidget {
-  const Event({
-    super.key,
-    required this.title,
-  });
+class Event extends StatefulWidget {
+  @override
+  State<Event> createState() => _EventState();
+}
 
-  final String title;
+class _EventState extends State<Event> {
+  int _current = 0;
+
+  final CarouselController _controller = CarouselController();
+
+  // late final String title;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        color: Color(0xFF7CAEF3),
-      ),
-      margin: const EdgeInsets.all(15),
-      height: 111,
-      child: Row(
+      margin: EdgeInsets.symmetric(vertical: 12),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
         children: [
-          Container(
-            width: 200,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  bottomLeft: Radius.circular(15)),
-              color: Colors.white,
-              image: DecorationImage(
-                  image: AssetImage('assets/images/HomeBackground.png'),
-                  fit: BoxFit.cover),
+          CarouselSlider(
+            items: imageSliders(context),
+            carouselController: _controller,
+            options: CarouselOptions(
+              height: 120,
+              autoPlay: true,
+              enlargeCenterPage: false,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              },
             ),
           ),
-          SizedBox(
-            width: 120,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF241F7B),
-                      ),
-                    ),
-                    const Text(
-                      "Staff",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF241F7B),
-                      ),
-                    ),
-                  ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: carouList
+                .map((list) => list[0])
+                .toList()
+                .asMap()
+                .entries
+                .map((entry) {
+              return GestureDetector(
+                onTap: () => _controller.animateToPage(entry.key),
+                child: Container(
+                  width: 5.0,
+                  height: 5.0,
+                  margin: EdgeInsets.symmetric(vertical: 13.0, horizontal: 1.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: (Theme.of(context).brightness == Brightness.light
+                              ? Colors.white
+                              : Colors.black)
+                          .withOpacity(_current == entry.key ? 0.9 : 0.4)),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "Open",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF241F7B),
-                      ),
-                    ),
-                    Text(
-                      "Recruitment",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF241F7B),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
+              );
+            }).toList(),
           ),
         ],
       ),
