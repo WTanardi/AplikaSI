@@ -1,7 +1,8 @@
+import 'package:aplika_si/Model/Event.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {
-  final List<String> carouselItem;
+  final Event carouselItem;
 
   const DetailPage(this.carouselItem);
 
@@ -27,7 +28,7 @@ class DetailPage extends StatelessWidget {
             children: [
               SizedBox(height: 12.0),
               Text(
-                carouselItem[1],
+                carouselItem.title,
                 textAlign: TextAlign.start,
                 style: TextStyle(
                   fontFamily: 'Poppins',
@@ -36,7 +37,7 @@ class DetailPage extends StatelessWidget {
                 ),
               ),
               Text(
-                carouselItem[2],
+                'Open Recruitment',
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 20,
@@ -49,7 +50,7 @@ class DetailPage extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
-                  carouselItem[0],
+                  "assets/images/HomeBackground.png",
                   fit: BoxFit.cover,
                   height: 120,
                 ),
@@ -58,7 +59,7 @@ class DetailPage extends StatelessWidget {
                 height: 15,
               ),
               Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin commodo erat eleifend, mollis magna ut, fringilla arcu. Fusce egestas elit id erat tempor.",
+                carouselItem.desc.substring(1, 200),
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 12,
@@ -69,7 +70,7 @@ class DetailPage extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin commodo erat eleifend, mollis magna ut, fringilla arcu. Fusce egestas elit id erat tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin commodo erat eleifend, mollis magna ut, fringilla arcu. Fusce egestas elit id erat tempor.",
+                carouselItem.desc,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 12,

@@ -44,11 +44,11 @@ final List<List<String>> carouList = [
   ]
 ];
 
-final List<Widget>? Function(BuildContext) imageSliders =
-    (BuildContext context) => carouList.asMap().entries.map(
+final List<Widget>? Function(BuildContext, List<Event>) imageSliders =
+    (BuildContext context, List<Event> events) => events.asMap().entries.map(
           (entry) {
             final int index = entry.key;
-            final List<String> list = entry.value;
+            final Event event = entry.value;
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -62,7 +62,7 @@ final List<Widget>? Function(BuildContext) imageSliders =
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailPage(list),
+                        builder: (context) => DetailPage(event),
                       ),
                     );
                   },
@@ -72,7 +72,8 @@ final List<Widget>? Function(BuildContext) imageSliders =
                         flex: 3,
                         child: Container(
                           height: 120,
-                          child: Image.asset(list[0], fit: BoxFit.fitHeight),
+                          child: Image.asset("assets/images/HomeBackground.png",
+                              fit: BoxFit.fitHeight),
                         ),
                       ),
                       Flexible(
@@ -89,7 +90,7 @@ final List<Widget>? Function(BuildContext) imageSliders =
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: Center(
                                   child: Text(
-                                    list[1],
+                                    event.title,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
@@ -101,7 +102,7 @@ final List<Widget>? Function(BuildContext) imageSliders =
                                 ),
                               ),
                               Text(
-                                list[2],
+                                'Open Recruitment',
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
@@ -403,7 +404,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Event(),
+          EventCarousel(),
           // Consumer<Events>(
           //   builder: (context, data, child) {
           //     return Row(
@@ -763,17 +764,26 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class Event extends StatefulWidget {
+class EventCarousel extends StatefulWidget {
   @override
-  State<Event> createState() => _EventState();
+  State<EventCarousel> createState() => _EventCarouselState();
 }
 
-class _EventState extends State<Event> {
+class _EventCarouselState extends State<EventCarousel> {
   int _current = 0;
 
   final CarouselController _controller = CarouselController();
 
-  // late final String title;
+  late List<Event> events;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    Provider.of<Events>(context, listen: true).initData();
+    events = Provider.of<Events>(context, listen: true).events.values.toList();
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -783,7 +793,7 @@ class _EventState extends State<Event> {
         alignment: Alignment.bottomCenter,
         children: [
           CarouselSlider(
-            items: imageSliders(context),
+            items: imageSliders(context, events),
             carouselController: _controller,
             options: CarouselOptions(
               height: 120,
@@ -798,12 +808,7 @@ class _EventState extends State<Event> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: carouList
-                .map((list) => list[0])
-                .toList()
-                .asMap()
-                .entries
-                .map((entry) {
+            children: events.toList().asMap().entries.map((entry) {
               return GestureDetector(
                 onTap: () => _controller.animateToPage(entry.key),
                 child: Container(
