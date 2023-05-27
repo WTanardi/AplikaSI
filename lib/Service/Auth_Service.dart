@@ -16,7 +16,6 @@ class Auth {
         password: password,
       );
       user = credential.user;
-      print('Sign in success');
       // message = 'Success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -26,7 +25,6 @@ class Auth {
       } else {
         message = 'Unknown Failed';
       }
-      print(e);
     }
     return message;
   }

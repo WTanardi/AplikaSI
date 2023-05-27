@@ -1,5 +1,6 @@
 import 'package:aplika_si/Service/Auth_Service.dart';
 import 'package:aplika_si/home_page.dart';
+import 'package:aplika_si/profil.dart';
 import 'package:aplika_si/validator.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (Auth.getAuthUser() != null) {
+      return const AplikaSI();
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(

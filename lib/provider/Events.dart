@@ -5,9 +5,11 @@ import 'package:aplika_si/Model/Event.dart';
 
 class Events extends ChangeNotifier {
   final Map<String, Event> _events = {};
+  final List<String> coba = [];
   final docRef = FirebaseFirestore.instance.collection('events').withConverter(
-      fromFirestore: Event.fromFirestore,
-      toFirestore: (Event event, options) => event.toFirestore());
+        fromFirestore: Event.fromFirestore,
+        toFirestore: (Event event, options) => event.toFirestore(),
+      );
 
   Map<String, Event> get events => _events;
 
@@ -17,7 +19,6 @@ class Events extends ChangeNotifier {
     for (var docSnapshot in data) {
       _events.putIfAbsent(docSnapshot.data().title, () => docSnapshot.data());
     }
-    print(_events);
     notifyListeners();
   }
 }

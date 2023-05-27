@@ -21,19 +21,18 @@ class User {
     required this.semester,
   });
 
-  factory User.fromFirestore(
-      QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
+  factory User.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot,
       SnapshotOptions? options) {
     final data = snapshot.data();
     return User(
-        email: data['email'],
-        username: data['username'],
-        name: data['name'],
-        nim: data['nim'],
-        phone: data['phone'],
-        isCommittee: data['isCommittee'],
-        field: data['field'],
-        semester: data['semester']);
+        email: data?['email'],
+        username: data?['username'],
+        name: data?['name'],
+        nim: data?['nim'],
+        phone: data?['phone'],
+        isCommittee: data?['isCommittee'],
+        field: data?['field'],
+        semester: data?['semester']);
   }
 
   Map<String, dynamic> toFirestore() {

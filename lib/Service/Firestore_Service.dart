@@ -1,8 +1,16 @@
 import 'package:aplika_si/Model/User.dart';
+import 'package:aplika_si/Service/Auth_Service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FireStore {
   static var db = FirebaseFirestore.instance;
+  late CollectionReference firestoreInstance;
+
+  FireStore(String collection, var from, var to) {
+    firestoreInstance = db
+        .collection(collection)
+        .withConverter(fromFirestore: from, toFirestore: to);
+  }
 
   // static User? getUser(String email) async {
   //   final docRef = db.collection('users').where('email', isEqualTo: email);
@@ -17,16 +25,11 @@ class FireStore {
     final docSnap = await docRef.get();
     final data = docSnap.docs.single;
     final options = SnapshotOptions();
-    print(data.data());
     return User.fromFirestore(data, options);
   }
 
-  static Future<Object?> getData(
-      String collection, var from, var to, String key) async {
-    final docRef = db
-        .collection(collection)
-        .withConverter(fromFirestore: from, toFirestore: to)
-        .doc(key);
+  Future<Object?> getData(String key) async {
+    final docRef = firestoreInstance.doc(key);
 
     final docSnap = await docRef.get();
     final data = docSnap.data();
@@ -36,5 +39,16 @@ class FireStore {
       print('No such document');
     }
     return data;
+  }
+
+  Future<String?> addData(Object model) async {
+    String? message;
+    try {
+      await firestoreInstance.add(model);
+      message = 'Success';
+    } on FirebaseException catch (e) {
+      message = e.message;
+    }
+    return message;
   }
 }

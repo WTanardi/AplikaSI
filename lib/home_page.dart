@@ -1,3 +1,4 @@
+import 'package:aplika_si/Extension/TimeOfDayExtension.dart';
 import 'package:aplika_si/Model/Event.dart';
 import 'package:aplika_si/Model/ToDo.dart';
 import 'package:aplika_si/Model/User.dart';
@@ -10,39 +11,40 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import 'carousel_detail.dart';
 import 'profil.dart';
 import 'news.dart';
 import 'calendar.dart';
 import 'about.dart';
 
-final List<List<String>> carouList = [
-  [
-    "assets/images/HomeBackground.png",
-    "POINTER 2023 Staff",
-    "Open Recruitment",
-  ],
-  [
-    "assets/images/HomeBackground.png",
-    "POINTER 2023 Staff",
-    "Open Recruitment",
-  ],
-  [
-    "assets/images/HomeBackground.png",
-    "POINTER 2023 Staff",
-    "Open Recruitment",
-  ],
-  [
-    "assets/images/HomeBackground.png",
-    "POINTER 2023 Staff",
-    "Open Recruitment",
-  ],
-  [
-    "assets/images/HomeBackground.png",
-    "POINTER 2023 Staff",
-    "Open Recruitment",
-  ]
-];
+// final List<List<String>> carouList = [
+//   [
+//     "assets/images/HomeBackground.png",
+//     "POINTER 2023 Staff",
+//     "Open Recruitment",
+//   ],
+//   [
+//     "assets/images/HomeBackground.png",
+//     "POINTER 2023 Staff",
+//     "Open Recruitment",
+//   ],
+//   [
+//     "assets/images/HomeBackground.png",
+//     "POINTER 2023 Staff",
+//     "Open Recruitment",
+//   ],
+//   [
+//     "assets/images/HomeBackground.png",
+//     "POINTER 2023 Staff",
+//     "Open Recruitment",
+//   ],
+//   [
+//     "assets/images/HomeBackground.png",
+//     "POINTER 2023 Staff",
+//     "Open Recruitment",
+//   ]
+// ];
 
 final List<Widget>? Function(BuildContext, List<Event>) imageSliders =
     (BuildContext context, List<Event> events) => events.asMap().entries.map(
@@ -92,7 +94,7 @@ final List<Widget>? Function(BuildContext, List<Event>) imageSliders =
                                   child: Text(
                                     event.title,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
@@ -133,7 +135,7 @@ class _AplikaSIState extends State<AplikaSI> {
   late int index;
 
   List showBottomNavBarItem = [
-    const HomePage(),
+    HomePage(),
     const CalendarPage(),
     const News(),
     Profil()
@@ -237,9 +239,13 @@ class _AplikaSIState extends State<AplikaSI> {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({
+  HomePage({
     super.key,
+    this.deadlineDate,
+    this.deadlineHour,
   });
+  DateTime? deadlineDate;
+  TimeOfDay? deadlineHour;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -249,8 +255,13 @@ class _HomePageState extends State<HomePage> {
   final _titleController = TextEditingController();
   final _courseController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  DateTime? deadlineDate;
-  TimeOfDay? deadlineHour;
+  bool invalidTime = false;
+
+  @override
+  void initState() {
+    Provider.of<ToDoModel>(context, listen: false).initData();
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() async {
@@ -284,8 +295,8 @@ class _HomePageState extends State<HomePage> {
 
   SingleChildScrollView HomeWidget(
       AsyncSnapshot<User> snapshot, BuildContext context) {
-    double? screenWidth = MediaQuery.of(context).size.width;
-    double? screenHeight = MediaQuery.of(context).size.height;
+    // double? screenWidth = MediaQuery.of(context).size.width;
+    // double? screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -491,10 +502,11 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     const SizedBox(height: 10),
                                     CustButton(
-                                      buttonText: (deadlineHour == null ||
-                                              deadlineDate == null)
+                                      buttonText: (widget.deadlineHour ==
+                                                  null ||
+                                              widget.deadlineDate == null)
                                           ? 'Please select deadline'
-                                          : '${DateFormat('dd-MM-yyyy').format(deadlineDate!)} / ${deadlineHour!.format(context)}',
+                                          : '${DateFormat('dd-MM-yyyy').format(widget.deadlineDate!)} / ${widget.deadlineHour!.format(context)}',
                                       onPressed: () {
                                         showDatePicker(
                                           context: context,
@@ -509,20 +521,49 @@ class _HomePageState extends State<HomePage> {
                                             .then((date) {
                                               if (date == null) return;
                                               setState(() {
-                                                deadlineDate = date;
+                                                widget.deadlineDate = date;
                                               });
                                             })
                                             .then(
                                               (value) => showTimePicker(
-                                                context: context,
-                                                initialTime: TimeOfDay.now(),
-                                              ),
+                                                  context: context,
+                                                  initialTime: TimeOfDay.now(),
+                                                  errorInvalidText:
+                                                      'Please select correct time'),
                                             )
                                             .then(
                                               (time) {
-                                                if (time == null) return;
+                                                if (time == null) {
+                                                  return const AlertDialog(
+                                                    title: Text(
+                                                        'Please Select a Hour'),
+                                                  );
+                                                }
+                                                if (time.compareTo(
+                                                            TimeOfDay.now()) ==
+                                                        -1 &&
+                                                    widget.deadlineDate!.day
+                                                            .compareTo(
+                                                                DateTime.now()
+                                                                    .day) ==
+                                                        0) {
+                                                  invalidTime = true;
+                                                  return showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        const AlertDialog(
+                                                      icon: Icon(
+                                                        Icons.warning,
+                                                        color: Colors.red,
+                                                      ),
+                                                      title: Text(
+                                                          'Cannot Select this Deadline'),
+                                                    ),
+                                                  );
+                                                }
                                                 setState(() {
-                                                  deadlineHour = time;
+                                                  invalidTime = false;
+                                                  widget.deadlineHour = time;
                                                 });
                                               },
                                             );
@@ -532,18 +573,22 @@ class _HomePageState extends State<HomePage> {
                                     CustButton(
                                       buttonText: 'Submit',
                                       onPressed: () {
-                                        if (formKey.currentState!.validate()) {
+                                        if (formKey.currentState!.validate() &&
+                                            !invalidTime) {
                                           Provider.of<ToDoModel>(context,
                                                   listen: false)
                                               .addToDo(
-                                            '${deadlineDate!.month}m${deadlineHour!.hour}h${deadlineHour!.minute}ms',
+                                            const Uuid().v1(),
                                             Todo(
+                                                userId: Auth.getAuthUser()!.uid,
                                                 task: _titleController.text
                                                     .toString(),
                                                 course: _courseController.text
                                                     .toString(),
-                                                deadlineDate: deadlineDate!,
-                                                deadlineHour: deadlineHour!),
+                                                deadlineDate:
+                                                    widget.deadlineDate!,
+                                                deadlineHour:
+                                                    widget.deadlineHour!),
                                           );
                                           Navigator.pop(context);
                                         }
