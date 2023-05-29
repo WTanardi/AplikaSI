@@ -136,7 +136,7 @@ class _AplikaSIState extends State<AplikaSI> {
 
   List showBottomNavBarItem = [
     HomePage(),
-    const CalendarPage(),
+    CalendarPage(),
     const News(),
     Profil()
   ];

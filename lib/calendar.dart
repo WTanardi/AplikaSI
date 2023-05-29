@@ -1,30 +1,35 @@
+import 'package:aplika_si/Model/Event.dart';
+import 'package:aplika_si/provider/Events.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
-  const CalendarPage({super.key});
+  CalendarPage({
+    super.key,
+  });
 
   @override
   State<CalendarPage> createState() => _CalendarPageState();
+  late List<DateTime> toHighlight;
 }
 
 class _CalendarPageState extends State<CalendarPage> {
   @override
+  void initState() {
+    super.initState();
+    var events = [];
+    // Provider.of<Events>(context, listen: true).events.values.toList();
+    for (Event event in events) {
+      if (!widget.toHighlight.contains(event.date)) {
+        widget.toHighlight.add(event.date);
+        print(event.date);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<String> months = [
-      "January",
-      "February",
-      "March",
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(17, 32, 17, 0),
       child: Column(

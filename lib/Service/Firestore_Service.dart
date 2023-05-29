@@ -28,9 +28,23 @@ class FireStore {
     return User.fromFirestore(data, options);
   }
 
+  static Future<String> editUser(
+      String email, List<Map<String, String>> parameter) async {
+    final docRef = db.collection('users').where('email', isEqualTo: email);
+    final docSnap = await docRef.get();
+    try {
+      final data = docSnap.docs.first.reference;
+      for (var updateData in parameter) {
+        await data.update(updateData);
+      }
+      return 'Success';
+    } on FirebaseException catch (e) {
+      return e.message!;
+    }
+  }
+
   Future<Object?> getData(String key) async {
     final docRef = firestoreInstance.doc(key);
-
     final docSnap = await docRef.get();
     final data = docSnap.data();
     if (data != null) {

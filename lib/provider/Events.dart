@@ -5,7 +5,6 @@ import 'package:aplika_si/Model/Event.dart';
 
 class Events extends ChangeNotifier {
   final Map<String, Event> _events = {};
-  final List<String> coba = [];
   final docRef = FirebaseFirestore.instance.collection('events').withConverter(
         fromFirestore: Event.fromFirestore,
         toFirestore: (Event event, options) => event.toFirestore(),

@@ -52,4 +52,17 @@ class Auth {
     }
     return user;
   }
+
+  static Future<String?> resetPassword({required String email}) async {
+    User? user;
+    try {
+      if (FirebaseAuth.instance.currentUser != null) {
+        user = FirebaseAuth.instance.currentUser;
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+        return 'Success';
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
 }

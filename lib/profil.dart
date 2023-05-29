@@ -1,6 +1,7 @@
 import 'package:aplika_si/Model/User.dart';
 import 'package:aplika_si/Service/Auth_Service.dart';
 import 'package:aplika_si/Service/Firestore_Service.dart';
+import 'package:aplika_si/edit_profile.dart';
 import 'package:aplika_si/login.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
@@ -253,7 +254,14 @@ class ProfileWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfile(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 23, vertical: 8),

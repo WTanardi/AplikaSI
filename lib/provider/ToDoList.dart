@@ -25,10 +25,6 @@ class ToDoModel extends ChangeNotifier {
     for (QueryDocumentSnapshot<Todo> data in todos) {
       _list.putIfAbsent(data.id, () => data.data());
     }
-
-    _list.keys.forEach((element) {
-      print(element);
-    });
   }
 
   void addToDo(String id, Todo todo) async {
