@@ -1,6 +1,8 @@
 import 'package:aplika_si/Model/Event.dart';
 import 'package:flutter/material.dart';
 
+import 'about.dart';
+
 class DetailPage extends StatelessWidget {
   final Event carouselItem;
 
@@ -19,6 +21,25 @@ class DetailPage extends StatelessWidget {
             fit: BoxFit.fitWidth,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AboutUs(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark_outlined,
+              size: 35,
+            ),
+          ),
+          const SizedBox(
+            width: 15,
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
