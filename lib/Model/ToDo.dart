@@ -6,15 +6,15 @@ class Todo {
   String userId;
   String task;
   String course;
-  TimeOfDay deadlineHour;
-  DateTime deadlineDate;
+  TimeOfDay hour;
+  DateTime date;
 
   Todo(
       {required this.userId,
       required this.task,
       required this.course,
-      required this.deadlineHour,
-      required this.deadlineDate});
+      required this.hour,
+      required this.date});
 
   factory Todo.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot,
       SnapshotOptions? options) {
@@ -23,9 +23,9 @@ class Todo {
       userId: data?['userId'],
       task: data?['task'],
       course: data?['course'],
-      deadlineDate: data?['deadlineDate'].toDate(),
-      deadlineHour: TimeOfDay.fromDateTime(
-        data?['deadlineHour'].toDate(),
+      date: data?['date'].toDate(),
+      hour: TimeOfDay.fromDateTime(
+        data?['hour'].toDate(),
       ),
     );
   }
@@ -35,8 +35,8 @@ class Todo {
       'userId': userId,
       'task': task,
       'course': course,
-      'deadlineHour': Timestamp.fromDate(deadlineDate.applied(deadlineHour)),
-      'deadlineDate': Timestamp.fromDate(deadlineDate)
+      'hour': Timestamp.fromDate(date.applied(hour)),
+      'date': Timestamp.fromDate(date)
     };
   }
 }

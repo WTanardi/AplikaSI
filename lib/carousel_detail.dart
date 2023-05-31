@@ -26,17 +26,17 @@ class DetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 12.0),
+              const SizedBox(height: 12.0),
               Text(
                 carouselItem.title,
                 textAlign: TextAlign.start,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 32,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Text(
+              const Text(
                 'Open Recruitment',
                 style: TextStyle(
                   fontFamily: 'Poppins',
@@ -44,7 +44,7 @@ class DetailPage extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               ClipRRect(
@@ -55,23 +55,23 @@ class DetailPage extends StatelessWidget {
                   height: 120,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(
                 carouselItem.desc.substring(1, 200),
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
                 carouselItem.desc,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,

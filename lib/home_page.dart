@@ -254,19 +254,44 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _titleController = TextEditingController();
   final _courseController = TextEditingController();
+  final _dateController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   bool invalidTime = false;
 
   @override
   void initState() {
-    Provider.of<ToDoModel>(context, listen: false).initData();
     super.initState();
+    Provider.of<ToDoModel>(context, listen: false).initData();
+    // _dateController.text = (widget.deadlineHour == null ||
+    //         widget.deadlineDate == null)
+    //     ? 'Please select a deadline'
+    //     : '${DateFormat('dd-MM-yyyy').format(widget.deadlineDate!)} / ${widget.deadlineHour!.format(context)}';
+    _dateController.addListener(updateDateText);
+  }
+
+  void updateDateText() {
+    setState(() {
+      _dateController.text = (widget.deadlineHour == null ||
+              widget.deadlineDate == null)
+          ? 'Please select deadline'
+          : '${DateFormat('dd-MM-yyyy').format(widget.deadlineDate!)} / ${widget.deadlineHour!.format(context)}';
+    });
   }
 
   @override
   void didChangeDependencies() async {
     Provider.of<Events>(context, listen: false).initData();
+    _dateController.text = (widget.deadlineHour == null ||
+            widget.deadlineDate == null)
+        ? 'Please select a deadline'
+        : '${DateFormat('dd-MM-yyyy').format(widget.deadlineDate!)} / ${widget.deadlineHour!.format(context)}';
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
   }
 
   @override
@@ -502,11 +527,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     const SizedBox(height: 10),
                                     CustButton(
-                                      buttonText: (widget.deadlineHour ==
-                                                  null ||
-                                              widget.deadlineDate == null)
-                                          ? 'Please select deadline'
-                                          : '${DateFormat('dd-MM-yyyy').format(widget.deadlineDate!)} / ${widget.deadlineHour!.format(context)}',
+                                      controller: _dateController,
                                       onPressed: () {
                                         showDatePicker(
                                           context: context,
@@ -515,11 +536,13 @@ class _HomePageState extends State<HomePage> {
                                           lastDate: DateTime.utc(
                                             DateTime.now().year,
                                             DateTime.now().month + 1,
-                                            1,
+                                            30,
                                           ),
                                         )
                                             .then((date) {
-                                              if (date == null) return;
+                                              if (date == null) {
+                                                return;
+                                              }
                                               setState(() {
                                                 widget.deadlineDate = date;
                                               });
@@ -564,6 +587,8 @@ class _HomePageState extends State<HomePage> {
                                                 setState(() {
                                                   invalidTime = false;
                                                   widget.deadlineHour = time;
+                                                  _dateController
+                                                      .notifyListeners();
                                                 });
                                               },
                                             );
@@ -571,7 +596,8 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     const SizedBox(height: 10),
                                     CustButton(
-                                      buttonText: 'Submit',
+                                      controller:
+                                          TextEditingController(text: 'Submit'),
                                       onPressed: () {
                                         if (formKey.currentState!.validate() &&
                                             !invalidTime) {
@@ -585,10 +611,8 @@ class _HomePageState extends State<HomePage> {
                                                     .toString(),
                                                 course: _courseController.text
                                                     .toString(),
-                                                deadlineDate:
-                                                    widget.deadlineDate!,
-                                                deadlineHour:
-                                                    widget.deadlineHour!),
+                                                date: widget.deadlineDate!,
+                                                hour: widget.deadlineHour!),
                                           );
                                           Navigator.pop(context);
                                         }
@@ -624,12 +648,10 @@ class _HomePageState extends State<HomePage> {
                                   task: todo.list.values.toList()[index].task,
                                   course:
                                       todo.list.values.toList()[index].course,
-                                  deadlineDate: todo.list.values
-                                      .toList()[index]
-                                      .deadlineDate,
-                                  deadlineHour: todo.list.values
-                                      .toList()[index]
-                                      .deadlineHour,
+                                  deadlineDate:
+                                      todo.list.values.toList()[index].date,
+                                  deadlineHour:
+                                      todo.list.values.toList()[index].hour,
                                 ),
                                 const SizedBox(
                                   height: 10,

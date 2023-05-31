@@ -110,7 +110,7 @@ class LoginWidget extends StatelessWidget {
                 height: 24,
               ),
               CustButton(
-                buttonText: 'Login',
+                controller: TextEditingController(text: 'Login'),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     String? message = await Auth.signIn(
@@ -189,16 +189,26 @@ class CustTextField extends StatelessWidget {
   }
 }
 
-class CustButton extends StatelessWidget {
+class CustButton extends StatefulWidget {
   final Function()? onPressed;
-  final String buttonText;
-  const CustButton(
-      {super.key, required this.buttonText, required this.onPressed});
+  final TextEditingController? controller;
+  const CustButton({super.key, required this.onPressed, this.controller});
+
+  @override
+  State<CustButton> createState() => _CustButtonState();
+}
+
+class _CustButtonState extends State<CustButton> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: widget.onPressed,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Container(
@@ -209,15 +219,28 @@ class CustButton extends StatelessWidget {
             color: const Color.fromARGB(255, 36, 31, 123),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Text(
-            buttonText,
+          child: TextField(
+            controller: widget.controller,
+            enabled: false,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontFamily: 'Poppins',
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+            ),
           ),
+          // child: Text(
+          //   widget.buttonText,
+          //   textAlign: TextAlign.center,
+          //   style: const TextStyle(
+          //     fontFamily: 'Poppins',
+          //     color: Colors.white,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // ),
         ),
       ),
     );
