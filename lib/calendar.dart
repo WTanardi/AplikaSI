@@ -5,6 +5,7 @@ import 'package:aplika_si/news.dart';
 import 'package:aplika_si/provider/Events.dart';
 import 'package:aplika_si/provider/ToDoList.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -16,14 +17,15 @@ class CalendarPage extends StatefulWidget {
   @override
   State<CalendarPage> createState() => _CalendarPageState();
   final List<DateTime> toHighlight = [];
-  final Map<DateTime, List<dynamic>> marks = {};
+  final Map<String, List<dynamic>> marks = {};
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  var currentDate = DateTime.now();
+  String? currentDate;
   // var selectedDay = DateTime.now();
   @override
   void didChangeDependencies() {
+    widget.marks.clear();
     initEventlist();
     initDatelist();
     super.didChangeDependencies();
@@ -32,10 +34,12 @@ class _CalendarPageState extends State<CalendarPage> {
   void initEventlist() {
     var events =
         Provider.of<Events>(context, listen: true).events.values.toList();
+    var dateKey;
     for (Event event in events) {
-      if (!widget.toHighlight.contains(event.date) &&
+      dateKey = DateFormat.yMd().format(event.date);
+      if (!widget.toHighlight.contains(dateKey) &&
           event.date.compareTo(DateTime.now()) == 1) {
-        widget.marks.putIfAbsent(event.date, () => [event]);
+        widget.marks[dateKey] = [...?widget.marks[dateKey], event];
         widget.toHighlight.add(event.date);
       }
     }
@@ -44,12 +48,21 @@ class _CalendarPageState extends State<CalendarPage> {
   void initDatelist() {
     var todos =
         Provider.of<ToDoModel>(context, listen: true).list.values.toList();
+    var dateKey;
     for (Todo todo in todos) {
-      if (!widget.toHighlight.contains(todo.date) &&
+      dateKey = DateFormat.yMd().format(todo.date);
+      if (!widget.toHighlight.contains(dateKey) &&
           todo.date.compareTo(DateTime.now()) == 1) {
-        widget.marks.putIfAbsent(todo.date, () => [todo]);
+        widget.marks[dateKey] = [...?widget.marks[dateKey], todo];
         widget.toHighlight.add(todo.date);
       }
+    }
+  }
+
+  void printAll(List<dynamic>? lists) {
+    if (lists == null) return;
+    for (var list in lists) {
+      print(list);
     }
   }
 
@@ -107,7 +120,9 @@ class _CalendarPageState extends State<CalendarPage> {
               ),
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
-                  currentDate = selectedDay;
+                  currentDate = DateFormat.yMd().format(selectedDay);
+                  printAll(widget.marks[currentDate]);
+                  print(currentDate);
                 });
               },
               calendarBuilders: CalendarBuilders(
@@ -141,14 +156,18 @@ class _CalendarPageState extends State<CalendarPage> {
                   return null;
                 },
               )),
-          Text('Date : $currentDate'),
           Flexible(
-            child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (BuildContext context, int index) {
-                return Text('index ${index + 1}');
-              },
-            ),
+            child: widget.marks[currentDate] == null
+                ? Text('Tidak ada event untuk tanggal $currentDate')
+                : ListView.builder(
+                    itemCount: widget.marks[currentDate]!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Text(
+                        'date : ${widget.marks[currentDate]![index].date}',
+                        textAlign: TextAlign.center,
+                      );
+                    },
+                  ),
           )
         ],
       ),

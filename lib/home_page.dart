@@ -262,10 +262,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Provider.of<ToDoModel>(context, listen: false).initData();
-    // _dateController.text = (widget.deadlineHour == null ||
-    //         widget.deadlineDate == null)
-    //     ? 'Please select a deadline'
-    //     : '${DateFormat('dd-MM-yyyy').format(widget.deadlineDate!)} / ${widget.deadlineHour!.format(context)}';
     _dateController.addListener(updateDateText);
   }
 
@@ -281,6 +277,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() async {
     Provider.of<Events>(context, listen: false).initData();
+    Provider.of<ToDoModel>(context, listen: false).initData();
     _dateController.text = (widget.deadlineHour == null ||
             widget.deadlineDate == null)
         ? 'Please select a deadline'
