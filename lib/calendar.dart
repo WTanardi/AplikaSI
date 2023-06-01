@@ -21,7 +21,7 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  String? currentDate;
+  String? currentDate = DateFormat.yMd().format(DateTime.now());
   // var selectedDay = DateTime.now();
   @override
   void didChangeDependencies() {
@@ -84,6 +84,7 @@ class _CalendarPageState extends State<CalendarPage> {
   // void initState() {
   //   super.initState();
   // }
+  DateTime today = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -103,27 +104,39 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ),
           TableCalendar(
+              pageJumpingEnabled: true,
               calendarFormat: CalendarFormat.month,
               firstDay: DateTime.utc(DateTime.now().year, 1, 1),
               lastDay: DateTime.utc(DateTime.now().year, 12, 31),
-              focusedDay: DateTime.now(),
+              focusedDay: today,
               headerVisible: true,
+              selectedDayPredicate: (day) => isSameDay(day, today),
+              availableGestures: AvailableGestures.all,
               calendarStyle: CalendarStyle(
-                isTodayHighlighted: true,
+                // isTodayHighlighted: true,
                 defaultTextStyle: const TextStyle(
                   fontFamily: 'Poppins',
                 ),
-                defaultDecoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+                // defaultDecoration: BoxDecoration(
+                //   shape: BoxShape.rectangle,
+                //   borderRadius: BorderRadius.circular(10),
+                // ),
               ),
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   currentDate = DateFormat.yMd().format(selectedDay);
-                  printAll(widget.marks[currentDate]);
-                  print(currentDate);
+                  focusedDay = selectedDay;
+                  today = selectedDay;
+                  // printAll(widget.marks[currentDate]);
+                  // print(currentDate);
                 });
+                // if (selectedDay.month != focusedDay.month) {
+                //   // Drag to the focused day
+                //   day = selectedDay;
+                // }
+              },
+              onPageChanged: (focusedDay) {
+                today = focusedDay;
               },
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, day, focusedDay) {
