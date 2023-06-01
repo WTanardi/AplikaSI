@@ -7,6 +7,7 @@ import 'package:aplika_si/Service/Firestore_Service.dart';
 import 'package:aplika_si/login.dart';
 import 'package:aplika_si/provider/Events.dart';
 import 'package:aplika_si/provider/ToDoList.dart';
+import 'package:aplika_si/todo_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -672,12 +673,22 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                         margin: const EdgeInsets.only(right: 25),
                         alignment: Alignment.bottomRight,
-                        child: const Text(
-                          "VIEW MORE",
-                          style: TextStyle(
-                              color: Color(0xFF241F7B),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ToDoDetail(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "VIEW MORE",
+                            style: TextStyle(
+                                color: Color(0xFF241F7B),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ),
                     )
