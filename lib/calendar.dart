@@ -114,27 +114,16 @@ class _CalendarPageState extends State<CalendarPage> {
               selectedDayPredicate: (day) => isSameDay(day, today),
               availableGestures: AvailableGestures.all,
               calendarStyle: const CalendarStyle(
-                // isTodayHighlighted: true,
                 defaultTextStyle: TextStyle(
                   fontFamily: 'Poppins',
                 ),
-                // defaultDecoration: BoxDecoration(
-                //   shape: BoxShape.rectangle,
-                //   borderRadius: BorderRadius.circular(10),
-                // ),
               ),
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   currentDate = DateFormat.yMd().format(selectedDay);
                   focusedDay = selectedDay;
                   today = selectedDay;
-                  // printAll(widget.marks[currentDate]);
-                  // print(currentDate);
                 });
-                // if (selectedDay.month != focusedDay.month) {
-                //   // Drag to the focused day
-                //   day = selectedDay;
-                // }
               },
               onPageChanged: (focusedDay) {
                 today = focusedDay;
@@ -172,14 +161,63 @@ class _CalendarPageState extends State<CalendarPage> {
               )),
           Flexible(
             child: widget.marks[currentDate] == null
-                ? Text('Tidak ada event untuk tanggal $currentDate')
+                ? Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Tidak ada event untuk tanggal $currentDate',
+                        style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w100,
+                        ),
+                      ),
+                    ],
+                  )
                 : ListView.builder(
                     itemCount: widget.marks[currentDate]!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Text(
-                        'date : ${widget.marks[currentDate]![index].date}',
-                        textAlign: TextAlign.center,
+                      if (widget.marks[currentDate]![index] is Event) {
+                        return Column(
+                          children: [
+                            ToDoList(
+                              task: widget.marks[currentDate]![index].title,
+                              course: 'Event',
+                              deadlineDate:
+                                  widget.marks[currentDate]![index].date,
+                              deadlineHour: TimeOfDay(
+                                  hour: widget
+                                      .marks[currentDate]![index].date.hour,
+                                  minute: widget
+                                      .marks[currentDate]![index].date.minute),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        );
+                      }
+                      return Column(
+                        children: [
+                          ToDoList(
+                            task: widget.marks[currentDate]![index].task,
+                            course: widget.marks[currentDate]![index].course,
+                            deadlineDate:
+                                widget.marks[currentDate]![index].date,
+                            deadlineHour:
+                                widget.marks[currentDate]![index].hour,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          )
+                        ],
                       );
+                      // Text(
+                      //   'date : ${widget.marks[currentDate]![index].date}',
+                      //   textAlign: TextAlign.center,
+                      // );
                     },
                   ),
           )

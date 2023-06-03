@@ -17,8 +17,10 @@ class ToDoModel extends ChangeNotifier {
   //     (Todo todo, SetOptions? options) => todo.toFirestore());
 
   void initData() async {
-    final data =
-        await docRef.where('userId', isEqualTo: Auth.getAuthUser()!.uid).get();
+    final data = await docRef
+        .where('userId', isEqualTo: Auth.getAuthUser()!.uid)
+        .orderBy('date')
+        .get();
     final todos = data.docs.toList();
     _list = {};
 
