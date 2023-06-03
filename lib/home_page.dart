@@ -439,33 +439,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           EventCarousel(),
-          // Consumer<Events>(
-          //   builder: (context, data, child) {
-          //     return Row(
-          //       children: [
-          //         SizedBox(
-          //           height: screenHeight * 0.2,
-          //           width: screenWidth,
-          //           child: ListView.builder(
-          //             physics: const AlwaysScrollableScrollPhysics(),
-          //             scrollDirection: Axis.horizontal,
-          //             shrinkWrap: true,
-          //             itemCount: data.events.length,
-          //             itemBuilder: (BuildContext context, int index) {
-          //               return Column(
-          //                 children: [
-          //                   Event(
-          //                       title: data.events.values.toList()[index].title,
-          //                       ),
-          //                 ],
-          //               );
-          //             },
-          //           ),
-          //         ),
-          //       ],
-          //     );
-          //   },
-          // ),
           Container(
             padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
             width: double.infinity,
@@ -632,6 +605,21 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Consumer<ToDoModel>(
                   builder: (context, todo, child) {
+                    if (todo.list.isEmpty) {
+                      return const SizedBox(
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            'There are no events',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w100,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                     return Column(
                       children: [
                         ListView.builder(
@@ -664,31 +652,24 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        print(Provider.of<ToDoModel>(context, listen: false)
-                            .list
-                            .keys);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 25),
-                        alignment: Alignment.bottomRight,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ToDoDetail(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "VIEW MORE",
-                            style: TextStyle(
-                                color: Color(0xFF241F7B),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
-                          ),
+                    Container(
+                      margin: const EdgeInsets.only(right: 25),
+                      alignment: Alignment.bottomRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ToDoDetail(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "VIEW MORE",
+                          style: TextStyle(
+                              color: Color(0xFF241F7B),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                     )
@@ -862,8 +843,23 @@ class _EventCarouselState extends State<EventCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    if (events.isEmpty) {
+      return const SizedBox(
+        height: 120,
+        child: Center(
+          child: Text(
+            'There are no events',
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 15,
+              fontWeight: FontWeight.w100,
+            ),
+          ),
+        ),
+      );
+    }
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -889,7 +885,8 @@ class _EventCarouselState extends State<EventCarousel> {
                 child: Container(
                   width: 5.0,
                   height: 5.0,
-                  margin: EdgeInsets.symmetric(vertical: 13.0, horizontal: 1.0),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 13.0, horizontal: 1.0),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: (Theme.of(context).brightness == Brightness.light

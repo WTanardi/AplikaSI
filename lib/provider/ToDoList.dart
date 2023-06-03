@@ -32,12 +32,19 @@ class ToDoModel extends ChangeNotifier {
       id,
       () => todo,
     );
-    await docRef.add(todo);
+    await docRef.doc(id).set(todo);
     notifyListeners();
   }
 
-  void removeToDo(String id) {
-    if (!_list.containsKey(id)) return;
+  void removeToDo(String id) async {
+    if (!_list.containsKey(id)) {
+      print('there are no this object');
+      return;
+    }
+    docRef.doc(id).delete().then(
+          (value) => print('Delete Success'),
+          onError: (e) => print('Error while deleting $e'),
+        );
     _list.remove(id);
     notifyListeners();
   }

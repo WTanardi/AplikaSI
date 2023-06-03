@@ -25,6 +25,7 @@ class _CalendarPageState extends State<CalendarPage> {
   // var selectedDay = DateTime.now();
   @override
   void didChangeDependencies() {
+    widget.toHighlight.clear();
     widget.marks.clear();
     initEventlist();
     initDatelist();
@@ -112,9 +113,9 @@ class _CalendarPageState extends State<CalendarPage> {
               headerVisible: true,
               selectedDayPredicate: (day) => isSameDay(day, today),
               availableGestures: AvailableGestures.all,
-              calendarStyle: CalendarStyle(
+              calendarStyle: const CalendarStyle(
                 // isTodayHighlighted: true,
-                defaultTextStyle: const TextStyle(
+                defaultTextStyle: TextStyle(
                   fontFamily: 'Poppins',
                 ),
                 // defaultDecoration: BoxDecoration(

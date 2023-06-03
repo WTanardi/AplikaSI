@@ -13,7 +13,13 @@ class Events extends ChangeNotifier {
   Map<String, Event> get events => _events;
 
   void initData() async {
-    final dataRef = await docRef.where('status', isEqualTo: true).get();
+    final dataRef = await docRef
+        .where('status', isEqualTo: true)
+        .where(
+          'date',
+          isGreaterThanOrEqualTo: Timestamp.fromDate(DateTime.now()),
+        )
+        .get();
     final data = dataRef.docs;
     for (var docSnapshot in data) {
       _events.putIfAbsent(docSnapshot.data().title, () => docSnapshot.data());
