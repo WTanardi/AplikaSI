@@ -3,9 +3,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
-        android:label="aplika_si"
+        android:label="Aplika_SI"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/himsi_1"
         android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"

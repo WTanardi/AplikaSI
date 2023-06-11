@@ -165,11 +165,7 @@ class _EditProfileState extends State<EditProfile> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(message)));
                                 }
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => Profil(),
-                                  ),
-                                );
+                                Navigator.of(context).pop(context);
                               }
                               // return;
                             }
