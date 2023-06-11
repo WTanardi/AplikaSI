@@ -27,7 +27,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void initState() {
-    print('Manuk');
     initText();
     super.initState();
   }
