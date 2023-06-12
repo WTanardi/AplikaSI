@@ -25,6 +25,7 @@ class _CalendarPageState extends State<CalendarPage> {
   // var selectedDay = DateTime.now();
   @override
   void didChangeDependencies() {
+    print('calendar page di print setiap saat');
     widget.toHighlight.clear();
     widget.marks.clear();
     initEventlist();

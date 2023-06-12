@@ -13,6 +13,7 @@ class Events extends ChangeNotifier {
   Map<String, Event> get events => _events;
 
   void initData() async {
+    print('init event');
     final dataRef = await docRef
         .where('status', isEqualTo: true)
         .where(

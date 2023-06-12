@@ -263,6 +263,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Provider.of<ToDoModel>(context, listen: false).initData();
+    Provider.of<Events>(context, listen: false).initData();
     _dateController.addListener(updateDateText);
   }
 
@@ -277,8 +278,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void didChangeDependencies() async {
-    Provider.of<Events>(context, listen: false).initData();
-    Provider.of<ToDoModel>(context, listen: false).initData();
+    print('ini print tiap saat');
+    // Provider.of<Events>(context, listen: false).initData();
+    // Provider.of<ToDoModel>(context, listen: false).initData();
     _dateController.text = (widget.deadlineHour == null ||
             widget.deadlineDate == null)
         ? 'Please select a deadline'
@@ -833,11 +835,15 @@ class _EventCarouselState extends State<EventCarousel> {
   late List<Event> events;
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<Events>(context, listen: false).initData();
+  }
+
+  @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    Provider.of<Events>(context, listen: true).initData();
     events = Provider.of<Events>(context, listen: true).events.values.toList();
-
     super.didChangeDependencies();
   }
 
